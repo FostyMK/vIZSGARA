@@ -1,0 +1,79 @@
+
+                  |- PC 
+			wan dhcp cli  
+HÁLÓ - ASA - WIFI - SWITCH
+     0/2   0/4  
+  outside  inside  
+  level 0  level 100
+  vlan 2   vlan 1
+           dhcp szerver
+		   
+		   
+ASA: 
+
+ena
+conf t
+password TechnikusVizsga
+enable password TechnikusVizsga
+interface Vlan 1
+nameif inside
+security-level 100
+ip address 10.0.0.26 255.255.255.0
+no shutdown
+interface Ethernet0/4
+switchport access vlan 1
+no shutdown
+
+dhcpd address 10.0.0.120-10.0.0.140 inside
+dhcpd dns 192.168.100.120
+dhcpd enable inside
+
+interface Vlan 2
+nameif outside
+security-level 0
+ip address 192.168.18.26 255.255.255.0
+no shutdown
+
+route outside 0.0.0.0 0.0.0.0 192.168.18.1
+
+----
+
+HOME WIFI
+
+pc kábel a számos helyekre megy be
+release, renew
+
+192.168.1.1 bongeszobe
+admin admin 
+utana a gui 
+
+
+
+-------
+
+SWITCH
+
+ena 
+conf t
+hostname SW 
+line con 0
+password TechnikusVizsga26
+login 
+exit
+int vlan 1
+ip add 192.168.26.120 255.255.255.0
+no shutdown
+int ran f0/1-14, f0/16-24
+switchport acc vl 77
+sh 
+exit
+username admin password Passw0rd
+ip domain-name vh.lan 
+cry k g rsa 
+1024
+line vty 0 4 
+login local
+trans in ssh 
+exit
+
+
